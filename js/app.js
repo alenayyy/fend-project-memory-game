@@ -46,9 +46,10 @@ function shuffle(array) {
 const deck = document.querySelector('.deck');
 
 // loop through each card and create its HTML
-shuffledCards.forEach( (card) => {
+shuffledCards.forEach( (card, i) => {
   // create the <li> element
   let cardElement = document.createElement('li');
+  cardElement.setAttribute('id', i+'_'+card);
   // set the class = 'card', on the <li>
   cardElement.setAttribute('class', 'card');
   // create the <i> element
@@ -72,4 +73,77 @@ shuffledCards.forEach( (card) => {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
- 
+ // set up the event listener for the deck
+ deck.addEventListener('click', respondToTheClick);
+
+// define a list for open cards
+let openCards = [];
+
+// respond to click event
+function respondToTheClick(evt) {
+  // if click not on a card or click is on a matched card, don't do anything
+  if(invalidClick(evt.target))
+    return;
+
+  displayCardSymbol(evt);
+  sleep(600).then(() => addCardToOpenCards(evt));
+}
+
+// set the card clicked to show
+function displayCardSymbol(evt) {
+  evt.target.className = 'card open show';
+}
+
+// ad card clicked to openCards and then lock, hide or do nothing
+function addCardToOpenCards(evt) {
+
+  // add the card to a *list* of "open" cards
+  openCards.push(evt.target.id);
+
+  // get the cards from openCards that are matching the clicked card
+  let matchingCards = getMatchingCards(evt.target.id);
+
+  // if there are 2 cards in openCards that are the same, lock the cards (change the class to card match)
+  if(matchingCards.length == 2) {
+    lockCards(matchingCards);
+  }
+  else {
+    // if the clicked card doesn't have a match, check if there's an even number of cards in openCards and, if there are, hide them
+    if(openCards.length % 2 === 0)
+      hideCards();
+  }
+}
+
+// get the card ids from openCards matching the cardId
+function getMatchingCards(cardId) {
+    return openCards.filter(c => cardsAreMatching(c, cardId));
+}
+
+// check if card1 and card2 ids have the same symbol (for example: '4_fa-boom' has the same symbol with '12_fa-boom')
+function cardsAreMatching(card1, card2) {
+    let re = /\d+_(.*)/;          // match examples: 4_something or 12_something
+    let s1 = card1.match(re);     // s1 is an array from which the second element matches the symbol
+    let s2 = card2.match(re);     // s2 is an array from which the second element matches the symbol
+    return s1.length >= 2 && s2.length >= 2 && s1[1] === s2[1];
+}
+
+// for each element with id from cardIdsToLock, change the class to 'card match'
+function lockCards(cardIdsToLock) {
+    cardIdsToLock.forEach(cardId => document.getElementById(cardId).className = 'card match');
+}
+
+// remove the last 2 cards from openCards and for each of them, change the class to 'card'
+function hideCards() {
+  let cardIdsToHide = openCards.splice(-2, 2);
+  cardIdsToHide.forEach(cardId => document.getElementById(cardId).className = 'card');
+}
+
+// if click is not on a card or, if click is on a card that has already been matched, return true
+function invalidClick(el) {
+  return el.nodeName.toLowerCase() !== 'li' || getMatchingCards(el.id).length == 2;
+}
+
+// sleep some time and then execute
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
