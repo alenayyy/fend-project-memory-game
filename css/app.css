@@ -29,8 +29,30 @@ body {
 }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    font-family: 'Gloria Hallelujah', cursive, 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 3em;
+    color: #2f3d48;
+}
+
+.text,
+.moves {
+  font-family: 'Gloria Hallelujah', cursive, 'Open Sans', sans-serif;
+  font-size: 1.2em;
+  font-weight: 900;
+  color: #2f3d48;
+}
+
+.restart {
+  width: 30px;
+  background-color: ;
+  text-align: center;
+  border-radius: 15%;
+  border: 0.5px solid #d3d1d1;
+  color: #2f3d48;
+  box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.47);
+  margin-top: 7px;
+
 }
 
 /*
@@ -40,7 +62,7 @@ h1 {
 .deck {
     width: 660px;
     min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    background: linear-gradient(160deg,  #f7b733 30%, #fc4a1a 100%);
     padding: 32px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
@@ -53,8 +75,8 @@ h1 {
 
 .deck .card {
     height: 125px;
-    width: 125px;
-    background: #2e3d49;
+    width: 22%;
+    background: #40515e;
     font-size: 0;
     color: #ffffff;
     border-radius: 8px;
@@ -63,6 +85,7 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    margin-bottom: 10px;
 
     /*transform-style: preserve-3d;
     transition: transform 1s;  */
@@ -73,7 +96,7 @@ h1 {
     background: #02b3e4;
     cursor: default;
     transform: rotateY( 180deg );
-    transition: transform 0.5s;
+    transition: transform 0.3s;
     /*transition: "all, 0.5s";*/
 }
 
