@@ -63,12 +63,18 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+
+    /*transform-style: preserve-3d;
+    transition: transform 1s;  */
 }
 
 .deck .card.open {
     transform: rotateY(0);
     background: #02b3e4;
     cursor: default;
+    transform: rotateY( 180deg );
+    transition: transform 0.5s;
+    /*transition: "all, 0.5s";*/
 }
 
 .deck .card.show {
@@ -79,6 +85,60 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+}
+
+.deck .card.fail {
+    transform: rotateY(0);
+    background: #E85256;
+    cursor: default;
+}
+
+.shake {
+    animation: shake 0.82s;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.bounceIn {
+    animation: bounceIn 0.82s;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/*
+ * Styles for the annimation of cards
+ */
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /*
