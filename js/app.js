@@ -22,10 +22,23 @@ const deck = document.querySelector('.deck');
 const restartButton = document.querySelector('.restart');
 let moveCounterElement = document.querySelector('.moves');
 let starCounterElement = document.querySelector('.stars');
+let timerElement = document.getElementById("timer");
 
 // add event listener for clicks
 deck.addEventListener('click', flipCard);
 restartButton.addEventListener('click', startGame);
+
+let startTime;
+
+// keep the timer going only during the game (after startTime is set and before all cards are matched)
+var x = setInterval(function() {
+  if(startTime && openCards.length < rows * columns) {
+      var now = new Date();
+      var seconds = getGameTimeInSeconds(startTime, now);
+      var timeMessage = secondsToTimeString(seconds);
+      timerElement.innerHTML = timeMessage;
+  }
+}, 1000);
 
 // start the game
 startGame();
@@ -42,6 +55,8 @@ function startGame() {
   starCounter = 0;
   moveCounterElement.innerText = moveCounter;
   starCounterElement.innerHTML = "";
+  timerElement.innerHTML = "";
+  startTime = null;
 
   // reset the openCards array to be empty
   openCards.length = 0;
@@ -69,6 +84,10 @@ function startGame() {
 
 // respond to click event
 function flipCard(evt) {
+
+  if(!startTime) {
+    startTime = new Date();
+  }
   // if click not on a card or click is on a matched card, don't do anything
   if(invalidClick(evt.target))
     return;
@@ -130,7 +149,7 @@ function lockCards(cardIdsToLock) {
       }
       swal({
         title: "Congratulations! You Won!",
-        text: "With " + moveCounter + " moves and " + starCounter + " stars!" ,
+        text: "With " + moveCounter + " moves and " + starCounter + " stars in " + secondsToTimeString(getGameTimeInSeconds(startTime, new Date())),
         icon: "success",
         buttons: {
           cancel: "Quit",
@@ -163,6 +182,7 @@ function invalidClick(el) {
   return el.nodeName.toLowerCase() !== 'li' || getMatchingCards(el.id).length == 2;
 }
 
+// increase the move counter and the number of black stars based on how many cards are matched per number of moves
 function incrementMoveCounterAndStars() {
   moveCounter += 1;
   moveCounterElement.innerText = moveCounter;
@@ -177,6 +197,7 @@ function incrementMoveCounterAndStars() {
   }
 }
 
+// create a black star element
 function makeStar() {
   let starElementFa = document.createElement('i');
   starElementFa.setAttribute('class', 'fa fa-star');
@@ -187,6 +208,38 @@ function makeStar() {
 // sleep some time and then execute
 function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+// function to return the number of seconds between 2 moments in time
+function getGameTimeInSeconds (start, end) {
+  var diff = end.getTime() - start.getTime();
+  return diff / 1000;
+}
+
+// function to format the timer shown inside the timerElement and in the 'Congratulations' modal
+function secondsToTimeString(secs) {
+  var seconds = Math.round(secs);
+  var hours = Math.floor(seconds / (60 * 60));
+  var divisorMinutes = seconds % (60 * 60);
+  var minutes = Math.floor(divisorMinutes / 60);
+  var divisorSeconds = divisorMinutes % 60;
+  var seconds = Math.ceil(divisorSeconds);
+
+  if (hours   < 10) {hours   = "0"+hours;}
+  if (minutes < 10) {minutes = "0"+minutes;}
+  if (seconds < 10) {seconds = "0"+seconds;}
+
+  if(hours === '00') {
+    if(minutes === '00') {
+      return seconds + ' seconds!';
+    }
+    else {
+      return minutes  + ':' + seconds + ' minutes!';
+    }
+  }
+  else {
+    return hours + ':' + minutes  + ':' + seconds + ' hours';
+  }
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
