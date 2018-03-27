@@ -8,6 +8,10 @@ let cards = [];
 let openCards = [];
 // count of number of moves
 let moveCounter;
+
+// number of stars
+let numberOfStars = 3;
+
 // list of symbols
 const symbols =['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
 
@@ -53,12 +57,21 @@ function startGame() {
   // set the move counter and the star counter elments to be empty (zero moves and no stars)
   moveCounter = 0;
   starCounter = 0;
-  moveCounterElement.innerText = moveCounter;
+
+  // create the white stars based on the numberOfStars defined above
   starCounterElement.innerHTML = "";
+  for (var i = 0; i < numberOfStars; i++) {
+    starCounterElement.append(makeStar('white'));
+  }
+
+  // set the moveCounterElement and the timerElement to be empty
+  moveCounterElement.innerText = moveCounter;
   timerElement.innerHTML = "";
+
+  // set the start time to null
   startTime = null;
 
-  // reset the openCards array to be empty
+  // set the openCards array to be empty
   openCards.length = 0;
 
   // shuffle the list of cards using the provided "shuffle" method
@@ -145,11 +158,14 @@ function lockCards(cardIdsToLock) {
     if(openCards.length === rows * columns) {
       if(moveCounter <= 22) {
         starCounter += 1;
-        starCounterElement.append(makeStar());
+        // remove the white star corresponding to the star counter number
+        starCounterElement.removeChild(starCounterElement.lastChild);
+        // add a black star
+        starCounterElement.append(makeStar('black'));
       }
       swal({
         title: "Congratulations! You Won!",
-        text: "With " + moveCounter + " moves and " + starCounter + " stars in " + secondsToTimeString(getGameTimeInSeconds(startTime, new Date())),
+        text: "With " + moveCounter + " moves and " + starCounter + " stars in " + timerElement.innerText,
         icon: "success",
         buttons: {
           cancel: "Quit",
@@ -189,18 +205,29 @@ function incrementMoveCounterAndStars() {
 
   if(openCards.length >= 4 && moveCounter <= 10 && starCounter < 1) {
     starCounter += 1;
-    starCounterElement.append(makeStar());
+    // remove the white star corresponding to the star counter number
+    starCounterElement.removeChild(starCounterElement.childNodes[starCounter]);
+    // add a black star
+    starCounterElement.prepend(makeStar('black'));
   }
   else if(openCards.length >= 8 && moveCounter <= 16 && starCounter < 2) {
     starCounter += 1;
-    starCounterElement.append(makeStar());
+    // remove the white star corresponding to the star counter number
+    starCounterElement.removeChild(starCounterElement.childNodes[starCounter]);
+    // add a black star
+    starCounterElement.prepend(makeStar('black'));
   }
 }
 
 // create a black star element
-function makeStar() {
+function makeStar(starType) {
   let starElementFa = document.createElement('i');
-  starElementFa.setAttribute('class', 'fa fa-star');
+  if(starType === 'black') {
+    starElementFa.setAttribute('class', 'fa fa-star');
+  }
+  else {
+    starElementFa.setAttribute('class', 'fa fa-star-o');
+  }
   let starElement = document.createElement('li').appendChild(starElementFa);
   return starElement;
 }
