@@ -18,7 +18,7 @@ body {
 
 body {
     background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
-    font-family: 'Coda', cursive;
+    font-family: 'Gloria Hallelujah', cursive, 'Open Sans', sans-serif;
 }
 
 .container {
@@ -35,41 +35,6 @@ h1 {
     color: #2f3d48;
 }
 
-.text,
-.moves {
-  font-family: 'Gloria Hallelujah', cursive, 'Open Sans', sans-serif;
-  font-size: 1.2em;
-  font-weight: 900;
-  color: #2f3d48;
-
-}
-
-.restart {
-  width: 30px;
-  background-color: ;
-  text-align: center;
-  border-radius: 15%;
-  border: 0.5px solid #d3d1d1;
-  color: #2f3d48;
-  box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.47);
-  margin-top: 7px;
-
-}
-
-.score-panel {
-
-
-}
-
-.stars {
-
-
-}
-
-.timer {
-
-  display:inline-block;
-}
 /*
  * Styles for the deck of cards
  */
@@ -101,15 +66,11 @@ h1 {
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
     margin-bottom: 10px;
-
-
-    /*transform-style: preserve-3d;
-    transition: transform 1s;  */
 }
 
 .deck .card.open {
     transform: rotateY(0);
-    background: #02b3e4;
+    background: #3dc9f4;
     cursor: default;
     transform: rotateY( 180deg );
     transition: transform 0.3s;
@@ -122,7 +83,7 @@ h1 {
 
 .deck .card.match {
     cursor: default;
-    background: #02ccba;
+    background: #a6db8a;
     font-size: 33px;
 }
 
@@ -188,6 +149,11 @@ h1 {
     text-align: left;
     width: 345px;
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .score-panel .stars {
@@ -205,4 +171,39 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+    width: 30px;
+    background-color: ;
+    text-align: center;
+    border-radius: 15%;
+    border: 0.5px solid #d3d1d1;
+    color: #2f3d48;
+    box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.47);
+}
+
+.text,
+.moves {
+    font-family: 'Gloria Hallelujah', cursive, 'Open Sans', sans-serif;
+    font-size: 1.2em;
+    font-weight: 900;
+    color: #2f3d48;
+}
+
+.timer {
+    font-family: 'Gloria Hallelujah', cursive, 'Open Sans', sans-serif;
+    display:inline-block;
+}
+
+/*
+ * Styles for the Swap Modal
+ */
+
+.swal-modal {
+  border: 3px solid #40515e;
+  font-family: 'Gloria Hallelujah', cursive, 'Open Sans', sans-serif;
+  background-color: #dbd6d6;
+  border-radius: 10px;
+}
+
+.swal-button {
+  background-color: #a6db8a;
 }
