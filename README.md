@@ -8,11 +8,14 @@
 ## Instructions
 
 To start the game, click on a card. Try to match as many cards as possible in the shortest amount of moves.
-Depending on the number of moves (attempts to match) and the number of cards matched, you'll be rewarded stars as follows:
-2 matches total in less than 10 moves - 1 star
-4 matches total in less than 16 moves - 2 stars
-8 matches total in less than 22 moves - 3 stars
+Depending on the number of moves (attempts to match) and the number of cards matched, you'll be rewarded stars:
+
+- 2 matches total in less than 10 moves - 1 star
+- 4 matches total in less than 16 moves - 2 stars
+- 8 matches total in less than 22 moves - 3 stars
+
 For example, if you finish the game in 24 moves, you'll only get 2 stars.
+
 To restart the game, click the restart button.
 
 The game is written in JavaScript and uses a third party library - **[SweetAlert](https://sweetalert.js.org/)** - to create a modal and display a message at the end of the game.
