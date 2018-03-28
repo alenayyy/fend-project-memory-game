@@ -1,25 +1,19 @@
-// number or columns
-const columns = 4;
-// number of rows
-const rows = 4;
 // list that holds all the cards
 let cards = [];
 // array to keep the open cards (ids)
 let openCards = [];
-// count of number of moves
+// count of number of moves and stars
 let moveCounter;
+let starCounter;
 
 // number of stars
-let numberOfStars = 3;
+const numberOfStars = 3;
 
 // list of symbols
 const symbols =['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
 
 // load the cards
-for(i = 0; i < columns * rows; i++) {
-  let symbolsIndex = (i >= symbols.length) ? i % symbols.length : i;
-  cards[i] = symbols[symbolsIndex];
-}
+cards = symbols.concat(symbols);
 
 // elements to work with
 const deck = document.querySelector('.deck');
@@ -36,7 +30,7 @@ let startTime;
 
 // keep the timer going only during the game (after startTime is set and before all cards are matched)
 var x = setInterval(function() {
-  if(startTime && openCards.length < rows * columns) {
+  if(startTime && openCards.length < cards.length) {
       var now = new Date();
       var seconds = getGameTimeInSeconds(startTime, now);
       var timeMessage = secondsToTimeString(seconds);
@@ -97,7 +91,10 @@ function startGame() {
 
 // respond to click event
 function flipCard(evt) {
-
+  //fix for double click on the same card
+  if(evt.detail > 1){
+    return;
+ }
   if(!startTime) {
     startTime = new Date();
   }
@@ -155,13 +152,9 @@ function lockCards(cardIdsToLock) {
     sleep(600).then(() => cardIdsToLock.forEach(cardId => document.getElementById(cardId).className = 'card match'));
     incrementMoveCounterAndStars();
 
-    if(openCards.length === rows * columns) {
+    if(openCards.length === cards.length) {
       if(moveCounter <= 22) {
-        starCounter += 1;
-        // remove the white star corresponding to the star counter number
-        starCounterElement.removeChild(starCounterElement.lastChild);
-        // add a black star
-        starCounterElement.append(makeStar('black'));
+        rewardStar(true);
       }
       swal({
         title: "Congratulations! You Won!",
@@ -204,19 +197,25 @@ function incrementMoveCounterAndStars() {
   moveCounterElement.innerText = moveCounter;
 
   if(openCards.length >= 4 && moveCounter <= 10 && starCounter < 1) {
-    starCounter += 1;
-    // remove the white star corresponding to the star counter number
-    starCounterElement.removeChild(starCounterElement.childNodes[starCounter]);
-    // add a black star
-    starCounterElement.prepend(makeStar('black'));
+    rewardStar(false);
   }
   else if(openCards.length >= 8 && moveCounter <= 16 && starCounter < 2) {
-    starCounter += 1;
-    // remove the white star corresponding to the star counter number
-    starCounterElement.removeChild(starCounterElement.childNodes[starCounter]);
-    // add a black star
-    starCounterElement.prepend(makeStar('black'));
+    rewardStar(false);
   }
+}
+
+function rewardStar(lastStar) {
+  starCounter += 1;
+  // remove the white star corresponding to the star counter number
+  if(lastStar) {
+    // remove the white star corresponding to the star counter number
+    starCounterElement.removeChild(starCounterElement.lastChild);
+  }
+  else {
+    starCounterElement.removeChild(starCounterElement.childNodes[starCounter]);
+  }
+  // add a black star
+  starCounterElement.prepend(makeStar('black'));
 }
 
 // create a black star element
